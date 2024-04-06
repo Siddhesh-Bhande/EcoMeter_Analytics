@@ -2,14 +2,18 @@ import { useState } from "react";
 import Register from "./Register";
 import LoginUser from "./LoginUser";
 
-export default function Loginform({ setshowlogin }) {
+export default function Loginform({
+  setshowlogin,
+  setUserLoggedIn,
+  isUserLogged,
+}) {
   const [newUser, setnewuser] = useState(false);
 
   function closepopup() {
     setshowlogin(false);
   }
   return (
-    <div className="grid popup w-screen h-full">
+    <div className="absolute grid popup w-screen h-full top-0 ">
       <div className="absolute h-full opacity-90 top-0 container-md z-10 login-container w-screen bg-gray-700"></div>
       <div className="place-self-center shadow-lg rounded-lg container-xs z-20 mt-16 opacity-100 bg-sky-100 m-auto">
         <span
@@ -32,12 +36,16 @@ export default function Loginform({ setshowlogin }) {
           </svg>
         </span>
         <h1 className="text-md text-center border-b-2 border-grey-400 p-2">
-          Login / Signup
+          Log in or Sign up
         </h1>
         {newUser ? (
           <Register setnewuser={setnewuser}></Register>
         ) : (
-          <LoginUser setnewuser={setnewuser}></LoginUser>
+          <LoginUser
+            setnewuser={setnewuser}
+            setshowlogin={setshowlogin}
+            setUserLoggedIn={setUserLoggedIn}
+          ></LoginUser>
         )}
       </div>
     </div>

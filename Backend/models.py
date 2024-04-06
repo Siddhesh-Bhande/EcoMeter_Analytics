@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Float
+from sqlalchemy import Column, Integer, String, TIMESTAMP, JSON
 from dbconnection import Base
+
 
 class User(Base):
     __tablename__ = "users"
@@ -10,6 +11,7 @@ class User(Base):
     password_hashed = Column(String(100))
     fullname = Column(String(100))
     created_at = Column(TIMESTAMP)
+    filters = Column(JSON)
 
 class EnergyData(Base):
     __tablename__ = "energy_consumption"

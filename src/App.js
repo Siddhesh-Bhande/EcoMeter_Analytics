@@ -3,7 +3,7 @@ import Energyexplorer from "./Components/Energyexplorer";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App dark:bg-slate-800">
       <Energyexplorer></Energyexplorer>
     </div>
   );
