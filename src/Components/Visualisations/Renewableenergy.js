@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import DatePickerModal from "./DatePickerModal";
 import StateFilter from "./visualisation_utilities/StateFilter";
 import SourceFilter from "./SourceFilter";
 import RE_Charts from "./energy_charts/RE_Charts";
+import { AuthContext } from "../User/AuthContext";
 
 export default function Renewableenergy() {
   const [dateRange, setdateRange] = useState({ minDate: "", maxDate: "" });
   const [energy_data, setenergydata] = useState(null);
   const [statesList, setstateslist] = useState([]);
+  const { token } = useContext(AuthContext);
   const [energySources, setenergySources] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
     states: [],
@@ -66,6 +68,23 @@ export default function Renewableenergy() {
     }
   }, [selectedFilters]);
 
+  async function saveFilters(filters) {
+    const response = await fetch("http://localhost:8000/update-user-filters/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ filters }), // Adjusted to match the expected structure
+    });
+
+    if (!response.ok) {
+      console.error("Failed to save filters", await response.text());
+    } else {
+      console.log("Filters saved successfully");
+    }
+  }
+
   const fetchFilteredData = () => {
     // Construct the query parameters based on filters
     const queryParams = new URLSearchParams();
@@ -89,6 +108,7 @@ export default function Renewableenergy() {
           );
         }
       });
+    saveFilters(selectedFilters);
   };
 
   return (
@@ -110,6 +130,7 @@ export default function Renewableenergy() {
         <StateFilter
           statesList={statesList}
           setSelectedFilters={setSelectedFilters}
+          selectedFilters={selectedFilters}
         ></StateFilter>
         <div className="md:border-r-2 md:w-full p-4 text-slate-50 md:border-y-2 md:px-16 sm:col-span-2 place-self-center">
           <button

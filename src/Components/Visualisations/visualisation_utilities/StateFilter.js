@@ -1,81 +1,93 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../../Modal"; // Ensure to import the Modal component
 
-export default function StateFilter({ statesList, setSelectedFilters }) {
+export default function StateFilter({
+  statesList,
+  setSelectedFilters,
+  selectedFilters,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedStates, setSelectedStates] = useState([]);
+  const [tempSelectedStates, setTempSelectedStates] = useState(
+    selectedFilters.states
+  );
 
   const handleCheckboxChange = (state) => {
-    setSelectedStates((prevSelectedStates) => {
-      if (prevSelectedStates.includes(state)) {
-        // Remove the state from the selected states
-        return prevSelectedStates.filter(
-          (selectedState) => selectedState !== state
-        );
-      } else {
-        // Add the state to the selected states
-        return [...prevSelectedStates, state];
-      }
-    });
+    setTempSelectedStates((prev) =>
+      prev.includes(state) ? prev.filter((s) => s !== state) : [...prev, state]
+    );
   };
 
-  const handleApplyFilter = () => {
-    // Set the selected states to the parent component's state
-    setSelectedFilters((prevSelectedFilters) => ({
-      ...prevSelectedFilters,
-      states: selectedStates,
+  const handleCloseModal = () => {
+    // Update the selectedFilters with the temporary selections upon closing the modal
+    setSelectedFilters((prev) => ({
+      ...prev,
+      states: tempSelectedStates,
     }));
-    setIsModalOpen(false); // Close the modal after applying the filter
+    setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    // This will synchronize tempSelectedStates with selectedFilters.states
+    // every time the selectedFilters.states changes outside this component.
+    setTempSelectedStates(selectedFilters.states);
+  }, [selectedFilters.states]);
+
+  useEffect(() => {
+    // Immediately update the selectedFilters with tempSelectedStates upon change
+    setSelectedFilters((prev) => ({
+      ...prev,
+      states: tempSelectedStates,
+    }));
+  }, [tempSelectedStates]);
 
   return (
     <div className="md:border-y-2 md:border-r-2 md:px-8 md:w-full md:p-4 text-slate-50 sm:col-span-2 place-self-center">
-      <div className="font-bold  hidden md:block">States</div>
-      {statesList.map((state) => (
-        <div className="hidden md:block" key={state}>
-          <input
-            type="checkbox"
-            id={`checkbox-${state}`}
-            name={state}
-            checked={selectedStates.includes(state)}
-            onChange={() => handleCheckboxChange(state)}
-            className="mr-2"
-          />
-          <label htmlFor={`checkbox-${state}`} className="ml-2">
-            {state}
-          </label>
-        </div>
-      ))}
+      <div className="font-bold hidden md:block">States</div>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-700 transition duration-300 md:mt-4 block md:hidden sm:inline md:hidden bg-slate-700 text-white p-2 px-4 rounded"
+        className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-700 transition duration-300 md:mt-4 block md:hidden sm:inline bg-slate-700 text-white p-2 px-4 rounded"
       >
         Select States
       </button>
 
       {/* The Modal component for multi-selection */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="grid grid-cols-2 gap-2">
-          <div className="font-bold text-lg text-slate-800 col-span-2">
-            Select States
-          </div>
-          {statesList.map((state) => (
-            <label
-              key={state}
-              className="col-span-1 text-slate-800 font-bold border-2 border-slate-400 p-2 rounded-lg "
-            >
-              <input
-                type="checkbox"
-                name={state}
-                checked={selectedStates.includes(state)}
-                onChange={() => handleCheckboxChange(state)}
-                className="mr-2"
-              />
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <div className="font-bold text-lg text-slate-800">Select States</div>
+        {statesList.map((state) => (
+          <label
+            key={state}
+            className="block text-slate-800 font-bold border-2 border-slate-400 p-2 rounded-lg text-center"
+          >
+            <input
+              type="checkbox"
+              name={state}
+              checked={tempSelectedStates.includes(state)}
+              onChange={() => handleCheckboxChange(state)}
+              className="mr-2"
+            />
+            {state}
+          </label>
+        ))}
+      </Modal>
+
+      {/* Checkbox list (visible on larger screens) */}
+      <div className="hidden md:block">
+        {statesList.map((state) => (
+          <div key={state} className="flex items-center">
+            <input
+              type="checkbox"
+              id={`checkbox-${state}`}
+              name={state}
+              checked={tempSelectedStates.includes(state)}
+              onChange={() => handleCheckboxChange(state)}
+              className="mr-2"
+            />
+            <label htmlFor={`checkbox-${state}`} className="ml-2">
               {state}
             </label>
-          ))}
-        </div>
-      </Modal>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
