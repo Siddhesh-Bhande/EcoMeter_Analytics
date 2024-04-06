@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../Modal"; // Ensure to import the Modal component
 
 export default function SourceFilter({
@@ -27,6 +27,14 @@ export default function SourceFilter({
     }));
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      sources: tempSelectedSources,
+    }));
+    console.log(selectedFilters);
+  }, [tempSelectedSources]);
 
   return (
     <div className="md:border-y-2 md:border-sky-50 md:border-r-2 md:w-full md:p-4 sm:p-2 md:px-8 text-slate-50 sm:col-span-3 place-self-center">
@@ -66,7 +74,7 @@ export default function SourceFilter({
               type="checkbox"
               id={`checkbox-${source}`}
               name={source}
-              checked={selectedFilters.sources.includes(source)}
+              checked={tempSelectedSources.includes(source)}
               onChange={() => handleCheckboxChange(source)}
               className="text-sky-500"
             />

@@ -4,6 +4,8 @@ import crud, models, dbconnection
 import bcrypt
 from datetime import datetime
 from starlette.middleware.cors import CORSMiddleware
+from typing import List
+from fastapi import Query
 import uvicorn
 
 from fastapi import APIRouter, status
@@ -64,9 +66,16 @@ def read_user(username: str, db: Session = Depends(get_db)):
     return db_user
 
 #To get entire energy data
+# @app.get("/get-energy-data")
+# def get_energy_data(db: Session = Depends(get_db)):
+#     energy_data = crud.get_energy_data(db)
+#     if energy_data is None:
+#         raise HTTPException(status_code=404, detail="Data not found")
+#     return energy_data
+
 @app.get("/get-energy-data")
-def get_energy_data(db: Session = Depends(get_db)):
-    energy_data = crud.get_energy_data(db)
+def get_energy_data(states: List[str] = Query(None), sources: List[str] = Query(None), db: Session = Depends(get_db)):
+    energy_data = crud.get_energy_data(db, states=states, sources=sources)
     if energy_data is None:
         raise HTTPException(status_code=404, detail="Data not found")
     return energy_data

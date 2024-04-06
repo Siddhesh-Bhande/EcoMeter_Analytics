@@ -6,7 +6,7 @@ import RE_Charts from "./energy_charts/RE_Charts";
 
 export default function Renewableenergy() {
   const [dateRange, setdateRange] = useState({ minDate: "", maxDate: "" });
-  const [energy_data, setenergydata] = useState([]);
+  const [energy_data, setenergydata] = useState(null);
   const [statesList, setstateslist] = useState([]);
   const [energySources, setenergySources] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -25,18 +25,71 @@ export default function Renewableenergy() {
   };
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/get-energy-data")
+    if (
+      selectedFilters.sources.length == 0 &&
+      selectedFilters.states.length == 0
+    ) {
+      fetch("http://127.0.0.1:8000/get-energy-data")
+        .then((res) => res.json())
+        .then((data) => {
+          getMinMaxDates(data);
+          setenergydata(data);
+          console.log(data);
+          setstateslist(Array.from(new Set(data.map((item) => item.state))));
+          setenergySources(
+            Array.from(new Set(data.map((item) => item.energy_source)))
+          );
+        });
+    } else {
+      // Construct the query parameters based on filters
+      const queryParams = new URLSearchParams();
+      selectedFilters.states.forEach((state) =>
+        queryParams.append("states", state)
+      );
+      selectedFilters.sources.forEach((source) =>
+        queryParams.append("sources", source)
+      );
+
+      fetch(`http://127.0.0.1:8000/get-energy-data?${queryParams.toString()}`)
+        .then((res) => res.json())
+        .then((data) => {
+          getMinMaxDates(data);
+          setenergydata(data);
+          if (!queryParams.toString()) {
+            // Update states and sources lists only if no filters are applied
+            setstateslist(Array.from(new Set(data.map((item) => item.state))));
+            setenergySources(
+              Array.from(new Set(data.map((item) => item.energy_source)))
+            );
+          }
+        });
+    }
+  }, [selectedFilters]);
+
+  const fetchFilteredData = () => {
+    // Construct the query parameters based on filters
+    const queryParams = new URLSearchParams();
+    selectedFilters.states.forEach((state) =>
+      queryParams.append("states", state)
+    );
+    selectedFilters.sources.forEach((source) =>
+      queryParams.append("sources", source)
+    );
+
+    fetch(`http://127.0.0.1:8000/get-energy-data?${queryParams.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         getMinMaxDates(data);
         setenergydata(data);
-        console.log(data);
-        setstateslist(Array.from(new Set(data.map((item) => item.state))));
-        setenergySources(
-          Array.from(new Set(data.map((item) => item.energy_source)))
-        );
+        if (!queryParams.toString()) {
+          // Update states and sources lists only if no filters are applied
+          setstateslist(Array.from(new Set(data.map((item) => item.state))));
+          setenergySources(
+            Array.from(new Set(data.map((item) => item.energy_source)))
+          );
+        }
       });
-  }, []);
+  };
 
   return (
     <div className="chartdiv grid grid-cols-10 md:m-16 gap-4 sm:m-6">
@@ -59,7 +112,10 @@ export default function Renewableenergy() {
           setSelectedFilters={setSelectedFilters}
         ></StateFilter>
         <div className="md:border-r-2 md:w-full p-4 text-slate-50 md:border-y-2 md:px-16 sm:col-span-2 place-self-center">
-          <button className="text-center bg-sky-400 rounded-md p-2 hover:bg-sky-600 transition">
+          <button
+            onClick={() => fetchFilteredData()}
+            className="text-center bg-sky-400 rounded-md p-2 hover:bg-sky-600 transition"
+          >
             Save Filter
           </button>
         </div>
