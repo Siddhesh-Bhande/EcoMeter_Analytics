@@ -19,13 +19,14 @@ export default function RE_Charts({ energy_data }) {
         </div>
       </div>
       <div className="md:col-span-3 sm:col-span-3  bg-slate-500 box rounded-md shadow-sm shadow-slate-300 p-4 place-self-center text-center w-full">
-        <div className="border-b-2 border-gray-400 font-bold sans-serif text-gray-50">
+        <div className="border-b-2 border-gray-400 font-bold sans-serif text-gray-50 ">
           Renewable Energy Mix Distribution
         </div>
-        <div className="chart-container  h-72 bg-slate-50 font-bold mt-2 p-4 rounded-lg">
+        <div className="w-full h-72 flex justify-center items-center bg-slate-50 font-bold mt-2 p-4 rounded-lg">
           <EnergyDoughnut energy_data={energy_data}></EnergyDoughnut>
         </div>
       </div>
+
       <div className="md:col-span-4 sm:col-span-5 bg-slate-500 box rounded-md shadow-sm shadow-slate-300 p-4 place-self-center text-center w-full">
         <div className="border-b-2 border-gray-400 font-bold sans-serif text-gray-50">
           State-wise Renewable Energy Generation and Consumption

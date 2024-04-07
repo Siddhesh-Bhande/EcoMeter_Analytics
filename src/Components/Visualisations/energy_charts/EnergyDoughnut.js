@@ -59,9 +59,9 @@ const CombinedEnergyDoughnut = ({ energy_data }) => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: "right",
         width: 10,
-        padding: 2,
+        padding: 4,
       },
       tooltip: {
         callbacks: {
