@@ -41,7 +41,7 @@ jobs:
     - name: Set up Node
       uses: actions/setup-node@v2
       with:
-        node-version: '18.9.0'
+        node-version: '20'
 
     - name: Install Node dependencies and build
       run: |
