@@ -1,70 +1,106 @@
-# Getting Started with Create React App
+# Renewable Energy Data Visualization with User Authentication
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Objective
+This web application visualizes energy consumption and generation data, providing secure user access. It allows users to register, log in, and gain personalized insights into renewable energy usage and trends, leveraging mock hourly consumption and generation data.
 
-## Available Scripts
+## Getting Started
+### Prerequisites
+  1. MySQL server must be installed and running.
+  2. Node.js and npm should be installed for the front end.
+  3. Python must be installed to run the backend API.
+### Setup Instructions
+#### Database Initialization:
+  Navigate to the MySQL server and import the SQL file from the initdb directory.
 
-In the project directory, you can run:
+#### Backend API:
+  Inside the Backend directory, install the required Python packages:
 
-### `npm start`
+  bash
+  Copy code
+  pip install -r Requirements.txt
+  Start the API service with Uvicorn:
+  
+  bash
+  Copy code
+  uvicorn myapi:app --reload
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### Frontend Application:
+  In the sidtrace directory, install the necessary npm packages:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  bash
+  Copy code
+  npm install
+  Run the React app:
+  
+  bash
+  Copy code
+  npm start
 
-### `npm test`
+  #### API Documentation
+  After running the FastAPI backend, visit /docs for interactive API documentation, where you can test and understand the various API endpoints   and their expected payloads.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Technology Stack
+  Frontend: React.js
+  Backend: Python with FastAPI
+  Database: MySQL
+  Visualization Libraries: charts.js, react-charts-js
+  Project Structure
+  
+## Frontend Components (/src)
+  Poster.js: Display header poster image.
+  Profile.js: User profile information.
+  Tagline.js: Application tagline display.
+  User Authentication: (/Components/User)
+  AuthContext.js: React context for user authentication.
+  LoginForm.js: Component for user login form.
+  Register.js: User registration form component.
+  Visualizations: (/Components/Visualisations)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  EnergyCharts:
+    EnergyDoughnut.js: Doughnut chart for energy distribution.
+    EnergyStackedBarChart.js: Stacked bar chart for comparative energy data.
+    RE_BarChart.js: Specialized bar chart for renewable energy data.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Backend API (/Backend)
+  FastAPI Endpoints:
+  User authentication, registration, and token generation.
+  Energy data retrieval with filter capabilities.
+  User favorite visualization updates.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Features
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### User Authentication
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+##### User registration and login functionality.
+##### Secure password hashing with the bcrypt library in Python.
+##### JWT (JSON Web Tokens) for authenticated sessions post-login.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Front-End
 
-## Learn More
+##### Responsive user interface developed with React.
+##### Dashboard access post-login for data visualization interaction.
+##### User registration and login forms.
+##### Dynamic charts and graphs for energy data visualization, with filters for energy sources and time frames.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Back-End
+##### RESTful API created with Python FastAPI.
+##### API features include user authentication, energy data retrieval, and filtering by date, energy source, and state.
+##### Secure storage of user information and energy data in MySQL database.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Data Visualization
+##### Interactive charts and graphs created with charts.js and react-charts-js libraries.
+##### Insights into consumption vs. generation trends, with a focus on renewable energy contributions.
 
-### Code Splitting
+#### Extra Credit Options
+##### Git CI/CD Pipeline: Utilization of GitHub for version control with structured commits.
+##### Report Generation: Users can now generate reports of the visualizations made by their favorite filters. They can download pdf file for the visualizations or get Excel file for Raw data
+##### Advanced Features: Capability for users to save their favorite visualizations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Future Enhancements
+##### Integrate real-time data feeds for up-to-date energy insights.
+##### Develop advanced data analytics features for deeper user engagement.
+##### Improve security features for API and user data protection.
