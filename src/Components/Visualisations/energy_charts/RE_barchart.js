@@ -29,14 +29,14 @@ const RE_barChart = ({ energy_data }) => {
       {
         label: "Generation",
         data: generationData,
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
+        backgroundColor: "#60cd41",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
       {
         label: "Consumption",
         data: consumptionData,
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: "#e34c36",
         borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
       },

@@ -18,14 +18,14 @@ const EnergyTimeSeries = ({ energy_data }) => {
         label: "Consumption",
         data: consumptionData,
         fill: false,
-        borderColor: "rgb(255, 205, 86)", // Yellow
+        borderColor: "#e14c36", // Yellow
         tension: 0.1,
       },
       {
         label: "Generation",
         data: generationData,
         fill: false,
-        borderColor: "rgb(75, 192, 192)", // Green
+        borderColor: "green", // Green
         tension: 0.1,
       },
     ],

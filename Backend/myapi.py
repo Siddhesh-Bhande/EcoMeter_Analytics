@@ -11,6 +11,7 @@ from jwt import PyJWTError, decode
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import jwt
 from pydantic import BaseModel
+from typing import Optional  # Make sure List is imported from typing
 
 SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
@@ -53,11 +54,26 @@ def read_user(username: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+# @app.get("/get-energy-data")
+# def get_energy_data(states: List[str] = Query(None), sources: List[str] = Query(None), db: Session = Depends(get_db)):
+#     energy_data = crud.get_energy_data(db, states=states, sources=sources)
+#     if energy_data is None:
+#         raise HTTPException(status_code=404, detail="Data not found")
+#     return energy_data
+
 @app.get("/get-energy-data")
-def get_energy_data(states: List[str] = Query(None), sources: List[str] = Query(None), db: Session = Depends(get_db)):
-    energy_data = crud.get_energy_data(db, states=states, sources=sources)
+def get_energy_data(
+    states: List[str] = Query(None),
+    sources: List[str] = Query(None),
+    startDate: Optional[str] = None,
+    endDate: Optional[str] = None,
+    db: Session = Depends(get_db)):
+    
+    energy_data = crud.get_energy_data(db, states=states, sources=sources, start_date=startDate, end_date=endDate)
     if energy_data is None:
-        raise HTTPException(status_code=404, detail="Data not found")
+        raise HTTPException(
+            status_code=404, detail="Data not found"
+        )
     return energy_data
 
 @app.post("/users/")
@@ -151,3 +167,13 @@ def get_user_filters(
 
     return {user.filters}
 
+@app.get("/get-user-filters")
+def get_user_filters(
+    db: Session = Depends(get_db), 
+    username: str = Depends(get_current_username)
+):
+    user = crud.get_user(db, username=username)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return user.filters

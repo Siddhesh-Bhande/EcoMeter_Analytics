@@ -1,9 +1,28 @@
-import React, { useState } from "react";
-import DatetimePicker from "./DatetimePicker"; // Make sure this is the correct path to your component
+import React, { useEffect, useState } from "react";
 import Modal from "../Modal";
+import DatePickerComp from "./visualisation_utilities/DatePickerComp";
 
-const DatePickerModal = ({ min, max }) => {
+const DatePickerModal = ({
+  energy_data,
+  setSelectedFilters,
+  selectedFilters,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dateRange, setdateRange] = useState({ minDate: "", maxDate: "" });
+
+  const getMinMaxDates = (energy_data) => {
+    console.log(energy_data);
+    const dates = energy_data.map((item) => new Date(item.recorded_time));
+    const minDate = new Date(Math.min(...dates));
+    const maxDate = new Date(Math.max(...dates));
+    console.log(minDate, maxDate);
+
+    setdateRange({ minDate: minDate, max: maxDate });
+  };
+
+  useEffect(() => {
+    getMinMaxDates(energy_data);
+  }, [energy_data]);
 
   return (
     <div className="md:p-4">
@@ -28,13 +47,19 @@ const DatePickerModal = ({ min, max }) => {
       </button>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition duration-300  hidden sm:hidden md:block "
+        className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-300  hidden sm:hidden md:block "
       >
-        Open Date Picker
+        Calender Pick
       </button>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <DatetimePicker min={min} max={max} />
+        {/* <DatetimePicker min={min} max={max} /> */}
+        <DatePickerComp
+          min={dateRange.minDate}
+          max={dateRange.maxDate}
+          selectedFilters={selectedFilters}
+          setSelectedFilters={setSelectedFilters}
+        ></DatePickerComp>
       </Modal>
     </div>
   );

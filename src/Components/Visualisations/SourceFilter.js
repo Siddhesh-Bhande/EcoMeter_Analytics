@@ -37,13 +37,13 @@ export default function SourceFilter({
   }, [tempSelectedSources]);
 
   return (
-    <div className="md:border-y-2 md:border-sky-50 md:border-r-2 md:w-full md:p-4 sm:p-2 md:px-8 text-slate-50 sm:col-span-3 place-self-center">
-      <div className="font-bold hidden md:block">Sources of Energy</div>
+    <div className="md:border-y-2 md:border-sky-50 md:border-r-2 md:w-full sm:p-2 md:px-8 text-emrald-800 sm:col-span-3 place-self-center">
+      <div className="font-bold hidden md:block">Energy Source</div>
       <button
         onClick={() => setIsModalOpen(true)}
         className="sm:block md:hidden bg-slate-700 text-white p-2 px-4 rounded"
       >
-        Select Energy Sources
+        Energy Source
       </button>
 
       {/* The Modal component for multi-selection */}

@@ -8,7 +8,26 @@ const stringToColor = (str) => {
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const color = `hsl(${hash % 360}, 50%, 50%)`;
+
+  let hue = hash % 360; // Keep the hue value
+  let saturation = "100%"; // Set the default saturation
+  let lightness = "50%"; // Set a lightness value
+
+  if (hue >= 30 && hue <= 60) {
+    // If hue is within blue range
+    hue = 210; // Set to blue
+  } else if (hue >= 200 && hue <= 240) {
+    // If hue is within violet range
+    hue = 120; // Set to violet
+  } else if (hue >= 90 && hue <= 120) {
+    // If hue is within green range
+    hue = 120; // Set to green
+  } else {
+    // Otherwise, set to orange
+    hue = 30;
+  }
+
+  const color = `hsl(${hue}, ${saturation}, ${lightness})`;
   return color;
 };
 

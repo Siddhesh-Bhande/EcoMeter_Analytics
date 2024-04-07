@@ -6,7 +6,6 @@ import RE_Charts from "./energy_charts/RE_Charts";
 import { AuthContext } from "../User/AuthContext";
 
 export default function Renewableenergy() {
-  const [dateRange, setdateRange] = useState({ minDate: "", maxDate: "" });
   const [energy_data, setenergydata] = useState(null);
   const [statesList, setstateslist] = useState([]);
   const { token } = useContext(AuthContext);
@@ -14,59 +13,90 @@ export default function Renewableenergy() {
   const [selectedFilters, setSelectedFilters] = useState({
     states: [],
     sources: [],
+    dates: { startDate: null, endDate: null },
   });
 
-  const getMinMaxDates = (data) => {
-    const dates = data.map((item) => new Date(item.recorded_time));
-    const minDate = new Date(Math.min(...dates));
-    const maxDate = new Date(Math.max(...dates));
-    console.log(minDate, maxDate);
-    const format = (date) => date.toISOString().split("T")[0];
-
-    setdateRange({ minDate: format(minDate), max: format(maxDate) });
-  };
-
   useEffect(() => {
-    if (
-      selectedFilters.sources.length == 0 &&
-      selectedFilters.states.length == 0
-    ) {
-      fetch("http://127.0.0.1:8000/get-energy-data")
-        .then((res) => res.json())
-        .then((data) => {
-          getMinMaxDates(data);
-          setenergydata(data);
-          console.log(data);
+    const queryParams = new URLSearchParams();
+
+    if (selectedFilters.sources.length > 0) {
+      selectedFilters.sources.forEach((source) =>
+        queryParams.append("sources", source)
+      );
+    }
+
+    if (selectedFilters.states.length > 0) {
+      selectedFilters.states.forEach((state) =>
+        queryParams.append("states", state)
+      );
+    }
+
+    if (selectedFilters.dates.startDate) {
+      queryParams.append("startDate", selectedFilters.dates.startDate);
+    }
+
+    if (selectedFilters.dates.endDate) {
+      queryParams.append("endDate", selectedFilters.dates.endDate);
+    }
+
+    const fetchURL = `http://127.0.0.1:8000/get-energy-data?${queryParams.toString()}`;
+    fetch(fetchURL)
+      .then((res) => res.json())
+      .then((data) => {
+        setenergydata(data);
+        console.log(data);
+        // Conditional logic for setting stateslist and energySources
+        if (
+          selectedFilters.sources.length === 0 &&
+          selectedFilters.states.length === 0
+        ) {
           setstateslist(Array.from(new Set(data.map((item) => item.state))));
           setenergySources(
             Array.from(new Set(data.map((item) => item.energy_source)))
           );
-        });
-    } else {
-      // Construct the query parameters based on filters
-      const queryParams = new URLSearchParams();
-      selectedFilters.states.forEach((state) =>
-        queryParams.append("states", state)
-      );
-      selectedFilters.sources.forEach((source) =>
-        queryParams.append("sources", source)
-      );
-
-      fetch(`http://127.0.0.1:8000/get-energy-data?${queryParams.toString()}`)
-        .then((res) => res.json())
-        .then((data) => {
-          getMinMaxDates(data);
-          setenergydata(data);
-          if (!queryParams.toString()) {
-            // Update states and sources lists only if no filters are applied
-            setstateslist(Array.from(new Set(data.map((item) => item.state))));
-            setenergySources(
-              Array.from(new Set(data.map((item) => item.energy_source)))
-            );
-          }
-        });
-    }
+        }
+      });
   }, [selectedFilters]);
+
+  // useEffect(() => {
+  //   if (
+  //     selectedFilters.sources.length == 0 &&
+  //     selectedFilters.states.length == 0
+  //   ) {
+  //     fetch("http://127.0.0.1:8000/get-energy-data")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setenergydata(data);
+  //         console.log(data);
+  //         setstateslist(Array.from(new Set(data.map((item) => item.state))));
+  //         setenergySources(
+  //           Array.from(new Set(data.map((item) => item.energy_source)))
+  //         );
+  //       });
+  //   } else {
+  //     // Construct the query parameters based on filters
+  //     const queryParams = new URLSearchParams();
+  //     selectedFilters.states.forEach((state) =>
+  //       queryParams.append("states", state)
+  //     );
+  //     selectedFilters.sources.forEach((source) =>
+  //       queryParams.append("sources", source)
+  //     );
+
+  //     fetch(`http://127.0.0.1:8000/get-energy-data?${queryParams.toString()}`)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setenergydata(data);
+  //         if (!queryParams.toString()) {
+  //           // Update states and sources lists only if no filters are applied
+  //           setstateslist(Array.from(new Set(data.map((item) => item.state))));
+  //           setenergySources(
+  //             Array.from(new Set(data.map((item) => item.energy_source)))
+  //           );
+  //         }
+  //       });
+  //   }
+  // }, [selectedFilters]);
 
   async function saveFilters(filters) {
     const response = await fetch("http://localhost:8000/update-user-filters/", {
@@ -98,7 +128,6 @@ export default function Renewableenergy() {
     fetch(`http://127.0.0.1:8000/get-energy-data?${queryParams.toString()}`)
       .then((res) => res.json())
       .then((data) => {
-        getMinMaxDates(data);
         setenergydata(data);
         if (!queryParams.toString()) {
           // Update states and sources lists only if no filters are applied
@@ -114,11 +143,12 @@ export default function Renewableenergy() {
   return (
     <div className="chartdiv grid grid-cols-10 md:m-16 gap-4 sm:m-6">
       <div className="md:col-span-2 sm:col-span-10 xs:col-span-10 md:mr-4 md:block sm:grid sm:grid-cols-8 sm:gap-3 md:overflow-x-hidden sm:overflow-x-scroll">
-        <div className="datepicker md:block md:border-t-2 md:border-r-2 text-center md:w-full p-4 sm:col-span-1 place-self-center">
-          {dateRange.maxDate != "" && dateRange.minDate != "" && (
+        <div className="datepicker md:block md:border-t-2 md:border-r-2 text-center md:w-full sm:col-span-1 place-self-center">
+          {energy_data != null && (
             <DatePickerModal
-              min={dateRange.minDate}
-              max={dateRange.maxDate}
+              energy_data={energy_data}
+              setSelectedFilters={setSelectedFilters}
+              selectedFilters={selectedFilters}
             ></DatePickerModal>
           )}
         </div>
@@ -127,6 +157,7 @@ export default function Renewableenergy() {
           setSelectedFilters={setSelectedFilters}
           selectedFilters={selectedFilters}
         ></SourceFilter>
+
         <StateFilter
           statesList={statesList}
           setSelectedFilters={setSelectedFilters}

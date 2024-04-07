@@ -1,0 +1,4 @@
+For backend - 
+# Install the necessary Python packages, including PyJWT
+fastapi sqlalchemy pydantic bcrypt uvicorn mysqlclient PyJWT
+

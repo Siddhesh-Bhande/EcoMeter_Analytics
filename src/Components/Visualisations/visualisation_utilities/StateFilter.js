@@ -41,7 +41,7 @@ export default function StateFilter({
   }, [tempSelectedStates]);
 
   return (
-    <div className="md:border-y-2 md:border-r-2 md:px-8 md:w-full md:p-4 text-slate-50 sm:col-span-2 place-self-center">
+    <div className="md:border-y-2 md:border-r-2 md:px-8 md:w-full md:p-4 text-slate-80 sm:col-span-2 place-self-center">
       <div className="font-bold hidden md:block">States</div>
       <button
         onClick={() => setIsModalOpen(true)}
