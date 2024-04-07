@@ -41,11 +41,12 @@ This web application visualizes energy consumption and generation data, providin
 
 
 ## Technology Stack
-  Frontend: React.js
-  Backend: Python with FastAPI
-  Database: MySQL
-  Visualization Libraries: charts.js, react-charts-js
-  Project Structure
+  - Frontend: React.js
+  - Backend: Python with FastAPI
+  - Database: MySQL
+  - Visualization Libraries: charts.js, react-charts-js
+
+# Project Structure
   
 ## Frontend Components (/src)
   Poster.js: Display header poster image.
@@ -68,39 +69,34 @@ This web application visualizes energy consumption and generation data, providin
   Energy data retrieval with filter capabilities.
   User favorite visualization updates.
 
+## Features
 
+### User Authentication
+- User registration and login functionality.
+- Secure password hashing with the bcrypt library in Python.
+- JWT (JSON Web Tokens) for authenticated sessions post-login.
 
-### Features
+### Front-End
+- Responsive user interface developed with React.
+- Dashboard access post-login for data visualization interaction.
+- User registration and login forms.
+- Dynamic charts and graphs for energy data visualization, with filters for energy sources and time frames.
 
-#### User Authentication
+### Back-End
+- RESTful API created with Python FastAPI.
+- API features include user authentication, energy data retrieval, and filtering by date, energy source, and state.
+- Secure storage of user information and energy data in MySQL database.
 
-##### User registration and login functionality.
-##### Secure password hashing with the bcrypt library in Python.
-##### JWT (JSON Web Tokens) for authenticated sessions post-login.
+### Data Visualization
+- Interactive charts and graphs created with `charts.js` and `react-charts-js` libraries.
+- Insights into consumption vs. generation trends, with a focus on renewable energy contributions.
 
-#### Front-End
+### Extra Credit Options
+- **Git CI/CD Pipeline**: Utilization of GitHub for version control with structured commits.
+- **Report Generation**: Users can now generate reports of the visualizations made by their favorite filters. They can download a PDF file for the visualizations or get an Excel file for raw data.
+- **Advanced Features**: Capability for users to save their favorite visualizations.
 
-##### Responsive user interface developed with React.
-##### Dashboard access post-login for data visualization interaction.
-##### User registration and login forms.
-##### Dynamic charts and graphs for energy data visualization, with filters for energy sources and time frames.
-
-#### Back-End
-##### RESTful API created with Python FastAPI.
-##### API features include user authentication, energy data retrieval, and filtering by date, energy source, and state.
-##### Secure storage of user information and energy data in MySQL database.
-
-#### Data Visualization
-##### Interactive charts and graphs created with charts.js and react-charts-js libraries.
-##### Insights into consumption vs. generation trends, with a focus on renewable energy contributions.
-
-#### Extra Credit Options
-##### Git CI/CD Pipeline: Utilization of GitHub for version control with structured commits.
-##### Report Generation: Users can now generate reports of the visualizations made by their favorite filters. They can download pdf file for the visualizations or get Excel file for Raw data
-##### Advanced Features: Capability for users to save their favorite visualizations
-
-
-#### Future Enhancements
-##### Integrate real-time data feeds for up-to-date energy insights.
-##### Develop advanced data analytics features for deeper user engagement.
-##### Improve security features for API and user data protection.
+## Future Enhancements
+- Integrate real-time data feeds for up-to-date energy insights.
+- Develop advanced data analytics features for deeper user engagement.
+- Improve security features for API and user data protection.
