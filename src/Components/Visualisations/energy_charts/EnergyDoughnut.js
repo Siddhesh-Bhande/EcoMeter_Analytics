@@ -2,6 +2,7 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
+import PolarAreaChart from "../visualisation_utilities/PolarAreaChart";
 
 const CombinedEnergyDoughnut = ({ energy_data }) => {
   // Initializing data structures
@@ -32,23 +33,32 @@ const CombinedEnergyDoughnut = ({ energy_data }) => {
   // Preparing chart data
   const chartData = {
     labels: energySources,
+    maintainAspectRatio: false,
     datasets: [
       {
         label: "Consumption",
         data: Object.values(consumptionData),
-        backgroundColor: consumptionColors,
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
         borderColor: consumptionColors.map((color) =>
           color.replace("0.5", "1")
         ),
-        borderWidth: 1,
+        borderWidth: 4,
         hoverOffset: 4,
       },
       {
         label: "Generation",
         data: Object.values(generationData),
-        backgroundColor: generationColors,
+        backgroundColor: [
+          "rgb(255, 77, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
         borderColor: generationColors.map((color) => color.replace("0.5", "1")),
-        borderWidth: 1,
+        borderWidth: 4,
         hoverOffset: 4,
       },
     ],
@@ -59,8 +69,7 @@ const CombinedEnergyDoughnut = ({ energy_data }) => {
     responsive: true,
     plugins: {
       legend: {
-        position: "right",
-        width: 10,
+        position: "left",
         padding: 4,
       },
       tooltip: {
@@ -84,7 +93,7 @@ const CombinedEnergyDoughnut = ({ energy_data }) => {
     },
   };
 
-  return <Doughnut data={chartData} options={options} />;
+  return <PolarAreaChart data={energy_data} />;
 };
 
 export default CombinedEnergyDoughnut;
