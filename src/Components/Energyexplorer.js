@@ -5,6 +5,7 @@ import Posters from "./Visualisations/Posters";
 import Renewableenergy from "./Visualisations/Renewableenergy";
 import Visualisations from "./Visualisations/Visualisations";
 import { AuthContext } from "./User/AuthContext";
+import Poster from "./Header/Poster";
 
 export default function Energyexplorer() {
   const [showLoginForm, setshowlogin] = useState(false);
@@ -39,6 +40,7 @@ export default function Energyexplorer() {
       ) : (
         console.log("Login not required")
       )}
+      {!isUserLogged && <Poster></Poster>}
       {!isUserLogged && (
         <Posters
           isUserLogged={isUserLogged}

@@ -64,7 +64,7 @@ export default function LoginUser({
       setshowlogin(false);
     } catch (error) {
       console.error("Login error:", error);
-      setLoginError(error.message);
+      setLoginError(error);
     }
   };
 
@@ -118,15 +118,17 @@ export default function LoginUser({
             </div>
           </div>
           {loginError && (
-            <div className="text-red-500">{loginError.message}</div>
+            <div className="text-red-500 sm:col-span-6">
+              {loginError.message}
+            </div>
           )}
           <div className="sm:col-span-6 place-center">
-            <button className="mb-2 mt-2 w-full p-1 text-lg hover:shadow-md rounded-lg mt-2 bg-sky-400 transition hover:bg-sky-100 hover:border-2 hover:border-sky-400 hover:text-sky-400 text-white">
+            <button className="mb-2 mt-2 w-full p-1 text-xl hover:shadow-md rounded-lg mt-2 bg-emerald-400 transition hover:bg-emerald-100 hover:border-2 hover:border-emerald-400 hover:text-emerald-400 text-white">
               Login
             </button>
             <button
               onClick={signuphandler}
-              className="mb-2 w-full p-1 text-lg rounded-lg mt-2 transition hover:bg-sky-100 border-2 border-sky-400 text-sky-400 hover:bg-sky-400 hover:text-white"
+              className="mb-2 w-full p-1 text-lg rounded-lg mt-2 transition hover:bg-emerald-100 border-2 border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-white"
             >
               First time here? Sign Up
             </button>

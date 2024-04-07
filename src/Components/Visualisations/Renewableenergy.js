@@ -4,7 +4,7 @@ import html2canvas from "html2canvas";
 import { useState, useEffect, useContext, useRef } from "react";
 import * as XLSX from "xlsx";
 import { format } from "date-fns";
-
+import Modal from "../Modal";
 import DatePickerModal from "./DatePickerModal";
 import StateFilter from "./visualisation_utilities/StateFilter";
 import SourceFilter from "./SourceFilter";
@@ -16,6 +16,7 @@ export default function Renewableenergy() {
   const [energy_data, setenergydata] = useState(null);
   const [statesList, setstateslist] = useState([]);
   const { token } = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [energySources, setenergySources] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
     states: [],
@@ -64,46 +65,6 @@ export default function Renewableenergy() {
         }
       });
   }, [selectedFilters]);
-
-  // useEffect(() => {
-  //   if (
-  //     selectedFilters.sources.length == 0 &&
-  //     selectedFilters.states.length == 0
-  //   ) {
-  //     fetch("http://127.0.0.1:8000/get-energy-data")
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setenergydata(data);
-  //         console.log(data);
-  //         setstateslist(Array.from(new Set(data.map((item) => item.state))));
-  //         setenergySources(
-  //           Array.from(new Set(data.map((item) => item.energy_source)))
-  //         );
-  //       });
-  //   } else {
-  //     // Construct the query parameters based on filters
-  //     const queryParams = new URLSearchParams();
-  //     selectedFilters.states.forEach((state) =>
-  //       queryParams.append("states", state)
-  //     );
-  //     selectedFilters.sources.forEach((source) =>
-  //       queryParams.append("sources", source)
-  //     );
-
-  //     fetch(`http://127.0.0.1:8000/get-energy-data?${queryParams.toString()}`)
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setenergydata(data);
-  //         if (!queryParams.toString()) {
-  //           // Update states and sources lists only if no filters are applied
-  //           setstateslist(Array.from(new Set(data.map((item) => item.state))));
-  //           setenergySources(
-  //             Array.from(new Set(data.map((item) => item.energy_source)))
-  //           );
-  //         }
-  //       });
-  //   }
-  // }, [selectedFilters]);
 
   async function saveFilters(filters) {
     const response = await fetch("http://localhost:8000/update-user-filters/", {
@@ -198,51 +159,92 @@ export default function Renewableenergy() {
   };
 
   return (
-    <div className="chartdiv grid grid-cols-10 md:m-16 gap-4 sm:m-6">
-      <div className="md:col-span-2 sm:col-span-10 xs:col-span-10 md:mr-4 md:block sm:grid sm:grid-cols-8 sm:gap-3 md:overflow-x-hidden sm:overflow-x-scroll">
-        <div className="datepicker md:block md:border-t-2 md:border-r-2 text-center md:w-full sm:col-span-1 place-self-center">
-          {energy_data != null && (
-            <DatePickerModal
-              energy_data={energy_data}
-              setSelectedFilters={setSelectedFilters}
-              selectedFilters={selectedFilters}
-            ></DatePickerModal>
-          )}
-        </div>
-        <SourceFilter
-          energySources={energySources}
-          setSelectedFilters={setSelectedFilters}
-          selectedFilters={selectedFilters}
-        ></SourceFilter>
+    <>
+      <div className="flex w-full px-16 grid place-objects-center">
+        <div className="flex gap-x-2 place-self-center my-4">
+          <div className="flex place-self-center font-serif text-lg">
+            Filters:{" "}
+          </div>
+          <div className="">
+            {energy_data != null && (
+              <DatePickerModal
+                energy_data={energy_data}
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+              ></DatePickerModal>
+            )}
+          </div>
+          <div className="flex">
+            <button
+              onClick={() => fetchFilteredData()}
+              className="text-center bg-sky-400 rounded-md p-2 hover:bg-sky-600 transition text-white"
+            >
+              Save Filter
+            </button>
+          </div>
+          <div className="flex">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-green-700 transition duration-300 flex items-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+                />
+              </svg>
+              <span className="ml-2">Generate Report</span>
+            </button>
 
-        <StateFilter
-          statesList={statesList}
-          setSelectedFilters={setSelectedFilters}
-          selectedFilters={selectedFilters}
-        ></StateFilter>
-        <div className="md:border-r-2 md:w-full p-4 text-slate-50 md:border-y-2 md:px-16 sm:col-span-2 place-self-center">
-          <button
-            onClick={() => fetchFilteredData()}
-            className="text-center bg-sky-400 rounded-md p-2 hover:bg-sky-600 transition"
-          >
-            Save Filter
-          </button>
-          <button className="text-slate-500" onClick={downloadPDF}>
-            Download PDF
-          </button>
-          <button className="text-slate-500" onClick={downloadExcel}>
-            Download Excel
-          </button>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+              {/* <DatetimePicker min={min} max={max} /> */}
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-green-700 transition duration-300"
+                onClick={downloadPDF}
+              >
+                PDF
+              </button>
+              <button
+                className="ml-6 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition duration-300"
+                onClick={downloadExcel}
+              >
+                Excel
+              </button>
+            </Modal>
+          </div>
         </div>
       </div>
-      {energy_data && (
-        <div
-          className="md:col-span-8 grid md:grid-cols-8 sm:grid-cols-5 gap-8 sm:col-span-10"
-          ref={chartsRef}
-        >
-          <RE_Charts energy_data={energy_data}></RE_Charts>
+      <div className="chartdiv grid grid-cols-10 gap-4 ">
+        <div className="md:col-span-2 m-auto col-span-10 md:my-0 md:mr-4 md:block sm:flex flex place-item-center sm:pl-16">
+          <SourceFilter
+            energySources={energySources}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
+          ></SourceFilter>
+
+          <StateFilter
+            statesList={statesList}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
+          ></StateFilter>
         </div>
-      )}
-    </div>
+        {energy_data && (
+          <div
+            className="md:col-span-8 grid md:grid-cols-8 sm:grid-cols-5 gap-8 sm:col-span-10 md:mx-0 mx-4"
+            ref={chartsRef}
+          >
+            <RE_Charts energy_data={energy_data}></RE_Charts>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

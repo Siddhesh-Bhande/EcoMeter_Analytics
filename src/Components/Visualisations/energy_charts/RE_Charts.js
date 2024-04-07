@@ -10,7 +10,7 @@ import "chartjs-adapter-date-fns";
 export default function RE_Charts({ energy_data }) {
   return (
     <>
-      <div className="md:col-span-5 sm:col-span-5 bg-slate-500 box rounded-md shadow-sm shadow-slate-300 p-4 place-self-center text-center w-full">
+      <div className="md:col-span-5 sm:col-span-5 bg-slate-500 box rounded-md shadow-sm shadow-slate-300 p-4 text-center w-full">
         <div className="border-b-2 border-gray-400 font-bold sans-serif text-gray-50">
           Daily Renewable Energy Generation vs. Consumption
         </div>

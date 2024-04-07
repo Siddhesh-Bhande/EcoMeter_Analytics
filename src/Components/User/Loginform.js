@@ -14,8 +14,8 @@ export default function Loginform({
   }
   return (
     <div className="absolute grid popup w-screen h-full top-0 ">
-      <div className="absolute h-full opacity-90 top-0 container-md z-10 login-container w-screen bg-gray-700"></div>
-      <div className="place-self-center shadow-lg rounded-lg container-xs z-20 mt-16 opacity-100 bg-sky-100 m-auto">
+      <div className="absolute h-full opacity-90 top-0 z-10 login-container w-screen bg-gray-700"></div>
+      <div className="place-self-center shadow-lg rounded-lg container-xs z-20 mt-32 md:w-1/4 w-5/6 opacity-100 bg-white border-2 border-emerald-500 m-auto">
         <span
           onClick={closepopup}
           className="flex object-center float-right mt-2 mr-2 cursor-pointer"
@@ -35,7 +35,7 @@ export default function Loginform({
             />
           </svg>
         </span>
-        <h1 className="text-md text-center border-b-2 border-grey-400 p-2">
+        <h1 className="text-md text-center border-b-2 border-emerald-400 p-2">
           Log in or Sign up
         </h1>
         {newUser ? (

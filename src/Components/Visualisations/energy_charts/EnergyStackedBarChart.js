@@ -102,6 +102,7 @@ const EnergyStackedBarChart = ({ energy_data }) => {
         console.log("Animation complete");
       },
     },
+    maintainAspectRatio: false,
   };
 
   return <StackedBarChart chartData={processedData} options={options} />;

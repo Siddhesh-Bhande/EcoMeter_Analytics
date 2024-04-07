@@ -41,11 +41,11 @@ export default function StateFilter({
   }, [tempSelectedStates]);
 
   return (
-    <div className="md:border-y-2 md:border-r-2 md:px-8 md:w-full md:p-4 text-slate-80 sm:col-span-2 place-self-center">
+    <div className="md:border-y-2 md:border-r-2 md:px-8 md:w-full md:p-4 text-slate-80 sm:col-span-2 md:place-self-center">
       <div className="font-bold hidden md:block">States</div>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-700 transition duration-300 md:mt-4 block md:hidden sm:inline bg-slate-700 text-white p-2 px-4 rounded"
+        className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-700 transition duration-300 md:mt-4 flex md:hidden sm:inline bg-slate-700 text-white p-2 px-4 rounded"
       >
         Select States
       </button>

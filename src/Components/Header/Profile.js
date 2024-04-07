@@ -26,7 +26,7 @@ export default function Profile({
   }
 
   return (
-    <div className="h-20 bg-emerald-500 w-full pb-2 mb-8">
+    <div className="h-20 bg-emerald-500 w-full -mb-2">
       <div className="float-left grid grid-cols-9 w-24 font-serif ml-4">
         <h1 className=" text-3xl m-6 ml-8 font-bold text-white col-span-3">
           Ec
@@ -47,7 +47,7 @@ export default function Profile({
           Meter
         </h1>
       </div>
-      <h1 className="float-left text-xl mt-12 mb-2 ml-9 font-bold text-white  col-span-4 font-serif">
+      <h1 className="float-left text-xl mt-12 ml-9 font-bold text-white  col-span-4 font-serif">
         analytics
       </h1>
       <div className="float-right z-0 mt-4 mr-10">
@@ -88,7 +88,7 @@ export default function Profile({
         </div>
         {showLogoutButton && (
           <button
-            className="absolute right-14 top-7 bg-sky-100 px-4 p-2 font-bold text-slate-800 border-none rounded-lg transition-transform transform hover:scale-110"
+            className="absolute right-24 top-5 bg-white px-4 p-2 font-bold text-emerald-800 border-none rounded-lg transition-transform transform-1 hover:scale-110 duration-2000"
             onClick={handleLogout}
           >
             Log out

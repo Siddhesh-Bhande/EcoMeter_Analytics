@@ -37,7 +37,7 @@ export default function SourceFilter({
   }, [tempSelectedSources]);
 
   return (
-    <div className="md:border-y-2 md:border-sky-50 md:border-r-2 md:w-full sm:p-2 md:px-8 text-emrald-800 sm:col-span-3 place-self-center">
+    <div className="md:border-y-2 md:border-sky-50 md:border-r-2 md:w-full mr-4 md:mr-0 md:px-8 text-emrald-800 sm:col-span-3 md:place-self-center">
       <div className="font-bold hidden md:block">Energy Source</div>
       <button
         onClick={() => setIsModalOpen(true)}

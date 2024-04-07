@@ -1,20 +1,17 @@
 import { useState } from "react";
 import SelectVisualisations from "./SelectVisualisations";
 import Renewableenergy from "./Renewableenergy";
+import DatePickerModal from "./DatePickerModal";
 
 export default function Visualisations() {
-  const [showRETrends, setShowRETrends] = useState(true);
-  const [showENVTrends, setShowENVTrends] = useState(false);
-  const [showWeatherTrends, setShowWeatherTrends] = useState(false);
-
   return (
     <div className="visualisations">
-      <SelectVisualisations
-        setShowENVTrends={setShowENVTrends}
-        setShowWeatherTrends={setShowWeatherTrends}
-        setShowRETrends={setShowRETrends}
-      ></SelectVisualisations>
-      {showRETrends && <Renewableenergy></Renewableenergy>}
+      <div className="text-4xl text-emerald-500 font-bold mt-4 text-center">
+        Renewable Energy Trends
+      </div>
+      <div className="">
+        <Renewableenergy></Renewableenergy>
+      </div>
     </div>
   );
 }

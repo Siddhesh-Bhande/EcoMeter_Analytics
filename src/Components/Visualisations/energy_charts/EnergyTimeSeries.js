@@ -34,6 +34,7 @@ const EnergyTimeSeries = ({ energy_data }) => {
   // Updated options to improve handling of dates and tooltips
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top",
