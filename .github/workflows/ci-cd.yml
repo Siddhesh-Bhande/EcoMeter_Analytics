@@ -48,7 +48,7 @@ jobs:
   
     - name: Install Node dependencies and build
       run: |
-        cd EcoMeter_Analytics
+        cd ../EcoMeter_Analytics
         npm install
         npm run build
 
