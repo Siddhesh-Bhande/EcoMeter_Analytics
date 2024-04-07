@@ -43,6 +43,9 @@ jobs:
       with:
         node-version: '20'
 
+    - name: List directory structure
+      run: ls -l
+  
     - name: Install Node dependencies and build
       run: |
         cd EcoMeter_Analytics
