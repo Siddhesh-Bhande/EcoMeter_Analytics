@@ -1,0 +1,80 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          MYSQL_DATABASE: renewable_energy_app
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+
+    - name: Install Python dependencies
+      run: |
+        cd Backend
+        pip install -r Requirements.txt
+
+    - name: Set up Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.9.0'
+
+    - name: Install Node dependencies and build
+      run: |
+        cd EcoMeter_Analytics
+        npm install
+        npm run build
+
+    - name: Decode SSH key
+      run: |
+        echo "$SSH_PRIVATE_KEY" | base64 --decode > ${HOME}/.ssh/id_rsa
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_USER: ubuntu
+        SERVER_IP: 52.14.141.135
+      run: |
+        # Prepare SSH
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
+
+        # Deploy Frontend
+        scp -r EcoMeter_Analytics/build $SERVER_USER@$SERVER_IP:/projects/myapp-frontend
+        ssh $SERVER_USER@$SERVER_IP "sudo systemctl restart nginx"
+
+        # Deploy Backend
+        scp -r Backend $SERVER_USER@$SERVER_IP:/projects/myapp-backend
+        ssh $SERVER_USER@$SERVER_IP << EOF
+          cd /projects/myapp-backend
+          pip install -r Requirements.txt
+          sudo systemctl restart myapp-backend.service
+        EOF
