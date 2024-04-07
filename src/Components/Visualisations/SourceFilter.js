@@ -33,8 +33,7 @@ export default function SourceFilter({
       ...prev,
       sources: tempSelectedSources,
     }));
-    console.log(selectedFilters);
-  }, [tempSelectedSources]);
+  }, [tempSelectedSources, setSelectedFilters]);
 
   return (
     <div className="md:border-y-2 md:border-sky-50 md:border-r-2 md:w-full mr-4 md:mr-0 md:px-8 text-emrald-800 sm:col-span-3 md:place-self-center">

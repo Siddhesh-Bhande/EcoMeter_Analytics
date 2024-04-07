@@ -8,7 +8,7 @@ import Modal from "../Modal";
 import DatePickerModal from "./DatePickerModal";
 import StateFilter from "./visualisation_utilities/StateFilter";
 import SourceFilter from "./SourceFilter";
-import RE_Charts from "./energy_charts/RE_Charts";
+import ReCharts from "./energy_charts/ReCharts";
 import { AuthContext } from "../User/AuthContext";
 
 export default function Renewableenergy() {
@@ -242,7 +242,7 @@ export default function Renewableenergy() {
             className="md:col-span-8 grid md:grid-cols-8 sm:grid-cols-5 gap-8 sm:col-span-10 md:mx-0 mx-4 pr-16"
             ref={chartsRef}
           >
-            <RE_Charts energy_data={energy_data}></RE_Charts>
+            <ReCharts energy_data={energy_data}></ReCharts>
           </div>
         )}
       </div>

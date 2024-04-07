@@ -1,13 +1,11 @@
-import React, { useRef } from "react";
+import React from "react";
 import EnergyDoughnut from "./EnergyDoughnut";
 import EnergyStackedBarChart from "./EnergyStackedBarChart";
 import EnergyTimeSeries from "./EnergyTimeSeries";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
-import RE_barchart from "./RE_barchart";
+import ReBarchart from "./ReBarchart";
 import "chartjs-adapter-date-fns";
 
-export default function RE_Charts({ energy_data }) {
+export default function ReCharts({ energy_data }) {
   return (
     <>
       <div className="md:col-span-5 sm:col-span-5 bg-slate-500 box rounded-md shadow-sm shadow-slate-300 p-4 text-center w-full">
@@ -32,7 +30,7 @@ export default function RE_Charts({ energy_data }) {
           State-wise Renewable Energy Generation and Consumption
         </div>
         <div className="chart-container h-72 bg-slate-50 font-bold mt-2 p-4 rounded-lg">
-          <RE_barchart energy_data={energy_data}></RE_barchart>
+          <ReBarchart energy_data={energy_data}></ReBarchart>
         </div>
       </div>
       <div className="md:col-span-4 sm:col-span-5 bg-slate-500 box rounded-md shadow-sm shadow-slate-300 p-4 place-self-center text-center w-full">

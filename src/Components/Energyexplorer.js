@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from "react";
 import Profile from "./Header/Profile";
 import Loginform from "./User/Loginform";
 import Posters from "./Visualisations/Posters";
-import Renewableenergy from "./Visualisations/Renewableenergy";
 import Visualisations from "./Visualisations/Visualisations";
 import { AuthContext } from "./User/AuthContext";
 import Poster from "./Header/Poster";

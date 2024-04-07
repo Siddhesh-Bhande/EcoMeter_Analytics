@@ -38,7 +38,7 @@ export default function StateFilter({
       ...prev,
       states: tempSelectedStates,
     }));
-  }, [tempSelectedStates]);
+  }, [tempSelectedStates, setSelectedFilters]);
 
   return (
     <div className="md:border-y-2 md:border-r-2 md:px-8 md:w-full md:p-4 text-slate-80 sm:col-span-2 md:place-self-center">

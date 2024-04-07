@@ -1,7 +1,4 @@
-import { useState } from "react";
-import SelectVisualisations from "./SelectVisualisations";
 import Renewableenergy from "./Renewableenergy";
-import DatePickerModal from "./DatePickerModal";
 
 export default function Visualisations() {
   return (

@@ -1,15 +1,9 @@
 import { DateRangePicker } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { addDays } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function DatePickerComp({
-  min,
-  max,
-  setSelectedFilters,
-  selectedFilters,
-}) {
+export default function DatePickerComp({ min, max, setSelectedFilters }) {
   const [state, setState] = useState([
     {
       startDate: new Date(min),
@@ -37,24 +31,6 @@ export default function DatePickerComp({
       },
     }));
   }
-
-  // useEffect(() => {
-  //   // Since your state is an array, you should access the first item like so
-  //   const { startDate, endDate } = state[0];
-
-  //   console.log(state);
-  //   if (startDate && endDate) {
-  //     console.log("into this effect");
-  //     setSelectedFilters((prevState) => ({
-  //       ...prevState,
-  //       dates: {
-  //         startDate: formatDate(startDate),
-  //         endDate: formatDate(endDate),
-  //       },
-  //     }));
-  //     console.log(selectedFilters);
-  //   }
-  // }, [state, setSelectedFilters]);
 
   return (
     <DateRangePicker
