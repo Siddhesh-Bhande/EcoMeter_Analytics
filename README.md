@@ -22,26 +22,21 @@ Navigate to the MySQL server and import the SQL file from the initdb directory.
 
 Inside the Backend directory, install the required Python packages:
 
-bash
-Copy code
+Run commands - 
 pip install -r Requirements.txt
+
 Start the API service with Uvicorn:
 
-bash
-Copy code
-uvicorn myapi:app --reload
+Run command - uvicorn myapi:app --reload
 
 #### Frontend Application:
 
 In the sidtrace directory, install the necessary npm packages:
 
-bash
-Copy code
+Run command -
 npm install
-Run the React app:
 
-bash
-Copy code
+Run the React app:
 npm start
 
 #### API Documentation
