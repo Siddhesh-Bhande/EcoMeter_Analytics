@@ -27,7 +27,7 @@ pip install -r Requirements.txt
 
 Start the API service with Uvicorn:
 
-Run command - uvicorn myapi:app --reload
+Run command - uvicorn main:app --reload
 
 #### Frontend Application:
 
