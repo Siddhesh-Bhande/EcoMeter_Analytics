@@ -1,0 +1,11 @@
+fastapi
+sqlalchemy
+pydantic
+bcrypt
+uvicorn
+mysqlclient
+PyJWT
+datetime
+starlette
+typing
+jwt

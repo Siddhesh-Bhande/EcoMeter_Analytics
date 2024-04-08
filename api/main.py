@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, Security, status
+from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 import crud, models, dbconnection
 import bcrypt
@@ -7,13 +7,12 @@ from starlette.middleware.cors import CORSMiddleware
 from typing import List
 from fastapi import Query
 import uvicorn
-from jwt import PyJWTError, decode
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import jwt
 from pydantic import BaseModel
 from typing import Optional  # Make sure List is imported from typing
 
-SECRET_KEY = "your_secret_key"
+SECRET_KEY = "public_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -166,14 +165,3 @@ def get_user_filters(
         raise HTTPException(status_code=404, detail="User not found")
 
     return {user.filters}
-
-@app.get("/get-user-filters")
-def get_user_filters(
-    db: Session = Depends(get_db), 
-    username: str = Depends(get_current_username)
-):
-    user = crud.get_user(db, username=username)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    return user.filters

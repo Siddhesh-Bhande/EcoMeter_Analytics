@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: renewable_energy_app
+      MYSQL_USER: sid1
+      MYSQL_PASSWORD: dbpassword
+    volumes:
+      - db-data:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+
+  api:
+    build: ./api
+    volumes:
+      - ./api:/code
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mysql+mysqlconnector://sid1:dbpassword@db/renewable_energy_app
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  db-data:

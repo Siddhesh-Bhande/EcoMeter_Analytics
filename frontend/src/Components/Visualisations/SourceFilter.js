@@ -40,7 +40,7 @@ export default function SourceFilter({
       <div className="font-bold hidden md:block">Energy Source</div>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="sm:block md:hidden bg-slate-700 text-white p-2 px-4 rounded"
+        className="sm:block md:hidden bg-slate-700 text-white p-2 px-4 rounded  pl-2"
       >
         Energy Source
       </button>
