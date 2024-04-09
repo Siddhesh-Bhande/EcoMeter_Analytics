@@ -8,14 +8,14 @@
 CREATE USER IF NOT EXISTS 'sid1'@'%' IDENTIFIED BY 'dbpassword';
 
 -- Grant all privileges on the renewable_energy_data database to the user 'sid1'
-GRANT ALL PRIVILEGES ON renewable_energy_data.* TO 'sid1'@'%';
+GRANT ALL PRIVILEGES ON renewable_energy_app.* TO 'sid1'@'%';
 
 -- Apply the changes immediately
 FLUSH PRIVILEGES;
 
 -- init-db.sql
-CREATE DATABASE IF NOT EXISTS renewable_energy_data;
-USE renewable_energy_data;
+CREATE DATABASE IF NOT EXISTS renewable_energy_app;
+USE renewable_energy_app;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
