@@ -269,14 +269,17 @@ CREATE TABLE `energy_data` (
 --
 
 CREATE TABLE `users` (
-  `user_id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password_hashed` varchar(100) NOT NULL,
   `fullname` varchar(100) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `filters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`filters`))
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `filters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL CHECK (json_valid(`filters`) OR `filters` IS NULL),
+  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 --
 -- Dumping data for table `users`
