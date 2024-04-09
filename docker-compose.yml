@@ -8,6 +8,7 @@ services:
       MYSQL_USER: sid1
       MYSQL_PASSWORD: dbpassword
     volumes:
+      - ./db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql                                     
       - db-data:/var/lib/mysql
     restart: always
     ports:
@@ -15,12 +16,12 @@ services:
 
   api:
     build: ./api
+    depends_on:
+      - db                    
     volumes:
       - ./api:/code
     ports:
       - "8000:80"
-    depends_on:
-      - db
     environment:
       - DATABASE_URL=mysql+mysqlconnector://sid1:dbpassword@db/renewable_energy_app
 

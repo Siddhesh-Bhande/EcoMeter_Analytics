@@ -9,3 +9,4 @@ datetime
 starlette
 typing
 jwt
+python-multipart

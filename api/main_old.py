@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-#import crud, models, dbconnection
+import crud, models, dbconnection
 import bcrypt
 from datetime import datetime, timedelta
 from starlette.middleware.cors import CORSMiddleware
@@ -11,80 +11,6 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import jwt
 from pydantic import BaseModel
 from typing import Optional  # Make sure List is imported from typing
-#models
-from sqlalchemy import Column, Integer, String, TIMESTAMP, JSON
-from sqlalchemy import cast, Date
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import sessionmaker
-
-
-#SQLALCHEMY_DATABASE_URL = "mysql://localhost:3306/renewable_energy_app"
-#SQLALCHEMY_DATABASE_URL = "mysql://sid1:dbpassword@localhost/renewable_energy_app"
-SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://sid1:dbpassword@host.docker.internal/renewable_energy_data"
-
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-print(engine)
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-print(SessionLocal)
-Base = declarative_base()
-
-
-
-class User(Base):
-    __tablename__ = "users"
-
-    user_id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(100), unique=True, index=True)
-    email = Column(String(100), unique=True, index=True)
-    password_hashed = Column(String(100))
-    fullname = Column(String(100))
-    created_at = Column(TIMESTAMP)
-    filters = Column(JSON)
-
-class EnergyData(Base):
-    __tablename__ = "energy_consumption"
-
-    data_id = Column(Integer, primary_key=True)  # Matches the AUTO_INCREMENT
-    recorded_time = Column(String(100), index=True)  # Name and type aligned with your table
-    consumption = Column(Integer, nullable=True)  # Type changed to Integer, allowing null
-    generation = Column(Integer)  # Type changed to Integer
-    energy_source = Column(String(20), nullable=True)  # Length adjusted, allowing null
-    state = Column(String(20), nullable=True)  # Length adjusted, allowing null 
-
-
-
-class crud:
-    def get_user(db: Session, username: str):
-        return db.query(User).filter(User.username == username).first()
-
-    # def get_energy_data(db: Session):
-    #     return db.query(EnergyData).all()
-
-
-    # def get_energy_data(db: Session, states: list = None, sources: list = None):
-    #     query = db.query(EnergyData)
-    #     if states:
-    #         query = query.filter(EnergyData.state.in_(states))
-    #     if sources:
-    #         query = query.filter(EnergyData.energy_source.in_(sources))
-    #     return query.all()
-
-    def get_energy_data(db: Session, states: list = None, sources: list = None, start_date: datetime = None, end_date: datetime = None):
-        query = db.query(EnergyData)
-        
-        if states:
-            query = query.filter(EnergyData.state.in_(states))
-        if sources:
-            query = query.filter(EnergyData.energy_source.in_(sources))
-        if start_date:
-            query = query.filter(cast(EnergyData.recorded_time, Date) >= start_date)
-        if end_date:
-            query = query.filter(cast(EnergyData.recorded_time, Date) <= end_date)
-        
-        return query.all()
 
 SECRET_KEY = "public_secret_key"
 ALGORITHM = "HS256"
@@ -102,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=dbconnection.engine)
 
 def hash_password(password: str) -> str:
     password_bytes = password.encode('utf-8')
@@ -114,7 +40,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 def get_db():
-    db = SessionLocal()
+    db = dbconnection.SessionLocal()
     try:
         yield db
     finally:
@@ -152,7 +78,7 @@ def get_energy_data(
 @app.post("/users/")
 def create_user(username: str, email: str, password: str, fullname: str, db: Session = Depends(get_db)):
     hashed_password = hash_password(password)
-    user_instance = User(
+    user_instance = models.User(
         username=username,
         email=email,
         password_hashed=hashed_password,

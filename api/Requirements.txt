@@ -8,4 +8,5 @@ PyJWT
 datetime
 starlette
 typing
-jwt
+mysql-connector-python>=8.0
+python-multipart
