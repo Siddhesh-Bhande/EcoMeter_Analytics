@@ -13,7 +13,13 @@ This web application visualizes energy consumption and generation data, providin
 3. Python must be installed to run the backend API.
 
 ### Setup Instructions
-
+Option 1: Using Docker:
+  -Please make sure docker is installed in your system
+  -Go to Project Directory and run this commands
+    - 1. docker-compose build
+    - 2. docker-compose up
+    navigate to react app @ localhost:3000
+Option 2: Manual setup
 #### Database Initialization:
 
 Navigate to the MySQL server and import the SQL file from the initdb directory.
