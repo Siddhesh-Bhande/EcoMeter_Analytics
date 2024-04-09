@@ -21,7 +21,7 @@ from sqlalchemy.orm import sessionmaker
 
 #SQLALCHEMY_DATABASE_URL = "mysql://localhost:3306/renewable_energy_app"
 #SQLALCHEMY_DATABASE_URL = "mysql://sid1:dbpassword@localhost/renewable_energy_app"
-SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://sid1:dbpassword@host.docker.internal/renewable_energy_data"
+SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://sid1:dbpassword@host.docker.internal/renewable_energy_app"
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
