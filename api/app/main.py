@@ -12,7 +12,7 @@ import jwt
 from pydantic import BaseModel
 from typing import Optional  # Make sure List is imported from typing
 #models
-from sqlalchemy import Column, Integer, String, TIMESTAMP, JSON
+from sqlalchemy import Column, Integer, String, TIMESTAMP, JSON, func
 from sqlalchemy import cast, Date
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
@@ -41,7 +41,7 @@ class User(Base):
     email = Column(String(100), unique=True, index=True)
     password_hashed = Column(String(100))
     fullname = Column(String(100))
-    created_at = Column(TIMESTAMP)
+    created_at = Column(TIMESTAMP, default=func.now())
     filters = Column(JSON)
 
 class EnergyData(Base):
@@ -157,6 +157,7 @@ def create_user(username: str, email: str, password: str, fullname: str, db: Ses
         email=email,
         password_hashed=hashed_password,
         fullname=fullname,
+        created_at = datetime.now(),
         filters='{}'
     )
     db.add(user_instance)
